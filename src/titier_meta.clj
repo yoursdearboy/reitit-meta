@@ -33,8 +33,16 @@
         base {:handler handler}]
     [uri {method (merge ns-meta meta base)}]))
 
+(defn sort-routes
+  "Routes must be sorted in ascending order, i.e. specific first"
+  [routes]
+  (reverse (sort-by first routes)))
+
 (defn merge-routes [routes]
-  (seq (reduce (fn [res [path map]] (update res path (partial merge map))) {} routes)))
+  (seq
+   (reduce
+    (fn [res [path map]] (update res path (partial merge map))) {}
+    (sort-routes routes))))
 
 (defn scan-in-ns [ns]
   (merge-routes
@@ -66,4 +74,5 @@
        (find-ns-decls)
        (filter #(contains? (deps-from-ns-decl %) the-ns-name))
        (map ns-decl-import)
-       (scan-ns)))
+       (scan-ns)
+       (sort-routes)))
