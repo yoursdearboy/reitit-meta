@@ -53,13 +53,16 @@
        (route ns-meta meta handler)))))
 
 (defn scan-the-ns [ns]
-  [(-> ns meta :route (or "/"))
-   (scan-in-ns ns)])
+  (let [url (-> ns meta :route (or "/"))
+        routes (scan-in-ns ns)]
+    (cond (some? routes) [url routes])))
 
 (defn scan-ns [ns]
   (if (sequential? ns)
-    (for [n ns]
-      (scan-the-ns n))
+    (for [n ns
+          :let [routes (scan-the-ns n)]
+          :when (some? routes)]
+      routes)
     (scan-the-ns ns)))
 
 (defn ns-decl-import [decl]
