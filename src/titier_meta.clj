@@ -5,8 +5,8 @@
             [clojure.java.classpath :refer [classpath]]))
 
 (defmacro setroutes
-  [route meta]
-  `(alter-meta! *ns* merge {:route ~route} ~meta))
+  ([route] `(setroutes ~route {}))
+  ([route meta] `(alter-meta! *ns* merge {:route ~route} ~meta)))
 
 (defmacro defroute
   {:arglists '([name route attr-map? [params*] body])}
