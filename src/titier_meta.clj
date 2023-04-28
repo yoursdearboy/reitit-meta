@@ -31,7 +31,9 @@
   (let [route (:route meta)
         [method uri] (parse-starting-line route)
         base {:handler handler}]
-    [uri {method (merge ns-meta meta base)}]))
+    [uri {:name (keyword (str (ns-name (:ns meta)))
+                         (str (:name meta)))
+          method (merge ns-meta meta base)}]))
 
 (defn sort-routes
   "Routes must be sorted in ascending order, i.e. specific first"
@@ -41,7 +43,7 @@
 (defn merge-routes [routes]
   (seq
    (reduce
-    (fn [res [path map]] (update res path (partial merge map))) {}
+    (fn [res [path map]] (update res path #(merge % map))) {}
     (sort-routes routes))))
 
 (defn scan-in-ns [ns]
