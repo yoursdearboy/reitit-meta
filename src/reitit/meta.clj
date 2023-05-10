@@ -1,4 +1,4 @@
-(ns titier-meta
+(ns reitit.meta
   (:require [clojure.string :refer [starts-with? lower-case replace-first trim]]
             [clojure.tools.namespace.parse :refer [deps-from-ns-decl]]
             [clojure.tools.namespace.find :refer [find-ns-decls]]
