@@ -55,7 +55,7 @@
        (route ns-meta meta handler)))))
 
 (defn scan-the-ns [ns]
-  (let [url (-> ns meta :route (or "/"))
+  (let [url (-> ns meta :route (or ""))
         routes (scan-in-ns ns)]
     (cond (some? routes) [url routes])))
 
